@@ -26,11 +26,20 @@ import subprocess
 
 
 class ExifTool:
-    def __init__(self):
+    def __init__(self, executable='exiftool', config=None, params=None):
+        self.executable = executable
+        self.config = config
+        self.params = params
+
+        self.instance = None
         self.running = False
 
     def __enter__(self):
-        pass
+        if self.running:
+            return
+
+        # TODO: run ExifTool instance
+        self.running = True
 
     def __exit__(self, exc_type, exc_value, traceback):
         pass
