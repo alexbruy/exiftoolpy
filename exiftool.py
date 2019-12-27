@@ -75,7 +75,7 @@ class ExifTool:
         self.instance = None
         self.running = False
 
-    def _prepareCommand(arguments):
+    def _prepareCommand(self, arguments):
         if sys.platform == 'win32':
             return subprocess.list2cmdline(arguments)
         else:
