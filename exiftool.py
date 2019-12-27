@@ -52,7 +52,7 @@ class ExifTool:
             command.extend(params)
 
         command.extend(DEFAULT_PARAMS)
-        cmd = self._prepareArguments(command)
+        cmd = self._prepareCommand(command)
 
         self.instance = subprocess.Popen(cmd,
                                          stdin=subprocess.PIPE,
@@ -75,9 +75,15 @@ class ExifTool:
         self.instance = None
         self.running = False
 
-    def _prepareArguments(arguments):
+    def _prepareCommand(arguments):
         if sys.platform == 'win32':
             return subprocess.list2cmdline(arguments)
         else:
             prepared = [shlex.quote(a) for a in arguments]
             return ' '.join(prepared)
+
+    def metadata(self, files):
+        pass
+
+    def tags(self, tags, files):
+        pass
