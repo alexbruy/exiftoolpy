@@ -22,7 +22,12 @@ __date__ = 'December 2019'
 __copyright__ = '(C) 2019, Alexander Bruy'
 
 import os
+import sys
+import shlex
 import subprocess
+
+
+DEFAULT_PARAMS = ['-stay_open', 'True', '-@', '-', '-common_args', '-groupNames', '--printConv']
 
 
 class ExifTool:
@@ -38,8 +43,41 @@ class ExifTool:
         if self.running:
             return
 
-        # TODO: run ExifTool instance
+        command = [self.executable]
+        if config:
+            command.append('-config')
+            command.append(self.config)
+
+        if params:
+            command.extend(params)
+
+        command.extend(DEFAULT_PARAMS)
+        cmd = self._prepareArguments(command)
+
+        self.instance = subprocess.Popen(cmd,
+                                         stdin=subprocess.PIPE,
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.DEVNULL,
+                                         universal_newlines=True
+                                        )
+
         self.running = True
 
     def __exit__(self, exc_type, exc_value, traceback):
-        pass
+        if not self.running:
+            return
+
+        self.instance.stdin.write('-stay_open\nFalse\n')
+        self.instance.stdin.flush()
+        self.instance.communicate()
+
+        del self.instance
+        self.instance = None
+        self.running = False
+
+    def _prepareArguments(arguments):
+        if sys.platform == 'win32':
+            return subprocess.list2cmdline(arguments)
+        else:
+            prepared = [shlex.quote(a) for a in arguments]
+            return ' '.join(prepared)
