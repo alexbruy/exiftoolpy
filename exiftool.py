@@ -82,6 +82,18 @@ class ExifTool:
             prepared = [shlex.quote(a) for a in arguments]
             return ' '.join(prepared)
 
+    def _execute(self, commands):
+        if not self.running:
+            return
+
+        cmd = '-json\n' + '\n'.join(commands) + '-execute\n'
+        self.instance.stdin.write(cmd)
+        self.instance.stdin.flush()
+
+        result = ''
+        # TODO: read output and convert to JSON
+
+
     def metadata(self, files):
         pass
 
