@@ -23,11 +23,12 @@ __copyright__ = '(C) 2019, Alexander Bruy'
 
 import os
 import sys
+import json
 import shlex
 import subprocess
 
 
-DEFAULT_PARAMS = ['-stay_open', 'True', '-@', '-', '-common_args', '-groupNames', '--printConv']
+DEFAULT_PARAMS = ['-stay_open', 'True', '-@', '-', '-common_args', '-groupNames', '--printConv', '-json']
 
 
 class ExifTool:
@@ -86,16 +87,26 @@ class ExifTool:
         if not self.running:
             return
 
-        cmd = '-json\n' + '\n'.join(commands) + '-execute\n'
+        cmd = '\n'.join(commands) + '\n-execute\n'
         self.instance.stdin.write(cmd)
         self.instance.stdin.flush()
 
-        result = ''
-        # TODO: read output and convert to JSON
+        output = ''
+        while True:
+            line = self.instance.stdout.readline()
+            if line == '{ready}':
+                break
 
+            output += line
+
+        result = json.loads(output)
+        return result
 
     def metadata(self, files):
-        pass
+        return self._execute(*files)
 
     def tags(self, tags, files):
-        pass
+        params = ['-{}'.format(t) for t in tags]
+        params.extend(files)
+
+        return self._execute(*params)
