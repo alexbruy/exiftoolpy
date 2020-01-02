@@ -45,11 +45,11 @@ class ExifTool:
             return
 
         command = [self.executable]
-        if config:
+        if self.config:
             command.append('-config')
             command.append(self.config)
 
-        if params:
+        if self.params:
             command.extend(params)
 
         command.extend(DEFAULT_PARAMS)
