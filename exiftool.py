@@ -53,9 +53,9 @@ class ExifTool:
             command.extend(params)
 
         command.extend(DEFAULT_PARAMS)
-        cmd = self._prepareCommand(command)
+        #cmd = self._prepareCommand(command)
 
-        self.instance = subprocess.Popen(cmd,
+        self.instance = subprocess.Popen(command,
                                          stdin=subprocess.PIPE,
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.DEVNULL,
