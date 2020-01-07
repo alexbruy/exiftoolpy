@@ -94,7 +94,7 @@ class ExifTool:
         output = ''
         while True:
             line = self.instance.stdout.readline()
-            if line == '{ready}':
+            if line.strip() == '{ready}':
                 break
 
             output += line
