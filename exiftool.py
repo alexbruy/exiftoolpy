@@ -109,4 +109,4 @@ class ExifTool:
         params = ['-{}'.format(t) for t in tags]
         params.extend(files)
 
-        return self._execute(*params)
+        return self._execute(params)

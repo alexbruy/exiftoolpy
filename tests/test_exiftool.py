@@ -71,6 +71,39 @@ class TextExifTool(unittest.TestCase):
             self.assertEqual(result[1]['EXIF:DateTimeOriginal'], '2007:09:12 10:58:25')
             self.assertEqual(result[1]['EXIF:GPSLatitude'], 0)
 
+    def testTags(self):
+        with ExifTool() as et:
+            tags = ['EXIF:FNumber',
+                    'EXIF:GPSLatitudeRef',
+                    'EXIF:GPSLatitude',
+                   ]
+            files = [os.path.join(DATA_DIRECTORY, 'RIMG0046.JPG')]
+            result = et.tags(tags, files)
+
+            self.assertEqual(len(result), 1)
+            self.assertEqual(len(result[0].keys()), 4)
+            self.assertEqual(result[0]['SourceFile'], files[0])
+            self.assertEqual(result[0]['EXIF:FNumber'], 4.7)
+            self.assertEqual(result[0]['EXIF:GPSLatitudeRef'], 'N')
+            self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
+
+            files = [os.path.join(DATA_DIRECTORY, 'RIMG0046.JPG'),
+                     os.path.join(DATA_DIRECTORY, 'RIMG0074.JPG')
+                    ]
+            result = et.tags(tags, files)
+
+            self.assertEqual(len(result), 2)
+            self.assertEqual(len(result[0].keys()), 4)
+            self.assertEqual(result[0]['SourceFile'], files[0])
+            self.assertEqual(result[0]['EXIF:FNumber'], 4.7)
+            self.assertEqual(result[0]['EXIF:GPSLatitudeRef'], 'N')
+            self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
+
+            self.assertEqual(len(result[1].keys()), 4)
+            self.assertEqual(result[1]['SourceFile'], files[1])
+            self.assertEqual(result[1]['EXIF:FNumber'], 3.1)
+            self.assertEqual(result[1]['EXIF:GPSLatitudeRef'], 'N')
+            self.assertEqual(result[1]['EXIF:GPSLatitude'], 0)
 
 if __name__ == '__main__':
     unittest.main()
