@@ -54,7 +54,6 @@ class ExifTool:
 
         command.extend(DEFAULT_PARAMS)
         #cmd = self._prepareCommand(command)
-
         self.instance = subprocess.Popen(command,
                                          stdin=subprocess.PIPE,
                                          stdout=subprocess.PIPE,
@@ -63,6 +62,7 @@ class ExifTool:
                                         )
 
         self.running = True
+        return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         if not self.running:
