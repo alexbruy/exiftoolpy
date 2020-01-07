@@ -22,10 +22,24 @@ __date__ = 'January 2020'
 __copyright__ = '(C) 2020, Alexander Bruy'
 
 import unittest
+from exiftool import ExifTool
 
 
 class TextExifTool(unittest.TestCase):
-    pass
+
+    def testContextManager(self):
+        et = ExifTool()
+
+        self.assertFalse(et.running)
+        self.assertIsNone(et.instance)
+
+        with et:
+            self.assertTrue(et.running)
+            self.assertIsNotNone(et.instance)
+            self.assertIsNone(et.instance.poll())
+
+        self.assertFalse(et.running)
+        self.assertIsNone(et.instance)
 
 
 if __name__ == '__main__':
