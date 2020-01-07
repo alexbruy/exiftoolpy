@@ -21,8 +21,11 @@ __author__ = 'Alexander Bruy'
 __date__ = 'January 2020'
 __copyright__ = '(C) 2020, Alexander Bruy'
 
+import os
 import unittest
 from exiftool import ExifTool
+
+DATA_DIRECTORY = os.path.join(os.path.dirname(__file__), 'data')
 
 
 class TextExifTool(unittest.TestCase):
@@ -40,6 +43,17 @@ class TextExifTool(unittest.TestCase):
 
         self.assertFalse(et.running)
         self.assertIsNone(et.instance)
+
+    def testMetadata(self):
+        with ExifTool() as et:
+            files = [os.path.join(DATA_DIRECTORY, 'RIMG0046.JPG')]
+            result = et.metadata(files)
+
+            self.assertEqual(len(result), 1)
+            self.assertEqual(result[0]['SourceFile'], fileName)
+            self.assertEqual(result[0]['File:FileName'], 'RIMG0046.JPG')
+            self.assertEqual(result[0]['EXIF:DateTimeOriginal'], '2007:09:12 10:26:37')
+            self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
 
 
 if __name__ == '__main__':
