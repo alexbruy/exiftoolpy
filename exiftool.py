@@ -103,7 +103,7 @@ class ExifTool:
         return result
 
     def metadata(self, files):
-        return self._execute(*files)
+        return self._execute(files)
 
     def tags(self, tags, files):
         params = ['-{}'.format(t) for t in tags]
