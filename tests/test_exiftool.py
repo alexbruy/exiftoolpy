@@ -50,10 +50,26 @@ class TextExifTool(unittest.TestCase):
             result = et.metadata(files)
 
             self.assertEqual(len(result), 1)
-            self.assertEqual(result[0]['SourceFile'], fileName)
+            self.assertEqual(result[0]['SourceFile'], files[0])
             self.assertEqual(result[0]['File:FileName'], 'RIMG0046.JPG')
             self.assertEqual(result[0]['EXIF:DateTimeOriginal'], '2007:09:12 10:26:37')
             self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
+
+            files = [os.path.join(DATA_DIRECTORY, 'RIMG0046.JPG'),
+                     os.path.join(DATA_DIRECTORY, 'RIMG0074.JPG')
+                    ]
+            result = et.metadata(files)
+
+            self.assertEqual(len(result), 2)
+            self.assertEqual(result[0]['SourceFile'], files[0])
+            self.assertEqual(result[0]['File:FileName'], 'RIMG0046.JPG')
+            self.assertEqual(result[0]['EXIF:DateTimeOriginal'], '2007:09:12 10:26:37')
+            self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
+
+            self.assertEqual(result[1]['SourceFile'], files[1])
+            self.assertEqual(result[1]['File:FileName'], 'RIMG0074.JPG')
+            self.assertEqual(result[1]['EXIF:DateTimeOriginal'], '2007:09:12 10:58:25')
+            self.assertEqual(result[1]['EXIF:GPSLatitude'], 0)
 
 
 if __name__ == '__main__':
