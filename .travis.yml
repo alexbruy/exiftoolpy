@@ -21,5 +21,15 @@ jobs:
         - sudo hdiutil attach ExifTool-${EXIFTOOL_VERSION}.dmg
         - sudo installer -package /Volumes/ExifTool-${EXIFTOOL_VERSION}/ExifTool-${EXIFTOOL_VERSION}.pkg -target /
 
+    - name: "Windows"
+      os: windows
+      language: shell
+      before_install:
+        - choco install python --version 3.8.0
+        - wget https://exiftool.org/exiftool-${EXIFTOOL_VERSION}.zip
+        - 7z x exiftool-${EXIFTOOL_VERSION}.zip
+        - mv "exiftool(-k).exe" exiftool.exe
+        - export PATH==${PWD}:/c/Python38:/c/Python38/Scripts:$PATH
+
 script:
   - python3 -m unittest -v tests/test_exiftool.py || python -m unittest -v tests/test_exiftool.py
