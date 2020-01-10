@@ -50,7 +50,7 @@ class TextExifTool(unittest.TestCase):
             result = et.metadata(files)
 
             self.assertEqual(len(result), 1)
-            self.assertEqual(result[0]['SourceFile'], files[0])
+            self.assertEqual(os.path.normpath(result[0]['SourceFile']), files[0])
             self.assertEqual(result[0]['File:FileName'], 'RIMG0046.JPG')
             self.assertEqual(result[0]['EXIF:DateTimeOriginal'], '2007:09:12 10:26:37')
             self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
@@ -61,12 +61,12 @@ class TextExifTool(unittest.TestCase):
             result = et.metadata(files)
 
             self.assertEqual(len(result), 2)
-            self.assertEqual(result[0]['SourceFile'], files[0])
+            self.assertEqual(os.path.normpath(result[0]['SourceFile']), files[0])
             self.assertEqual(result[0]['File:FileName'], 'RIMG0046.JPG')
             self.assertEqual(result[0]['EXIF:DateTimeOriginal'], '2007:09:12 10:26:37')
             self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
 
-            self.assertEqual(result[1]['SourceFile'], files[1])
+            self.assertEqual(os.path.normpath(result[1]['SourceFile']), files[1])
             self.assertEqual(result[1]['File:FileName'], 'RIMG0074.JPG')
             self.assertEqual(result[1]['EXIF:DateTimeOriginal'], '2007:09:12 10:58:25')
             self.assertEqual(result[1]['EXIF:GPSLatitude'], 0)
@@ -82,7 +82,7 @@ class TextExifTool(unittest.TestCase):
 
             self.assertEqual(len(result), 1)
             self.assertEqual(len(result[0].keys()), 4)
-            self.assertEqual(result[0]['SourceFile'], files[0])
+            self.assertEqual(os.path.normpath(result[0]['SourceFile']), files[0])
             self.assertEqual(result[0]['EXIF:FNumber'], 4.7)
             self.assertEqual(result[0]['EXIF:GPSLatitudeRef'], 'N')
             self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
@@ -94,13 +94,13 @@ class TextExifTool(unittest.TestCase):
 
             self.assertEqual(len(result), 2)
             self.assertEqual(len(result[0].keys()), 4)
-            self.assertEqual(result[0]['SourceFile'], files[0])
+            self.assertEqual(os.path.normpath(result[0]['SourceFile']), files[0])
             self.assertEqual(result[0]['EXIF:FNumber'], 4.7)
             self.assertEqual(result[0]['EXIF:GPSLatitudeRef'], 'N')
             self.assertEqual(result[0]['EXIF:GPSLatitude'], 49.7501944444444)
 
             self.assertEqual(len(result[1].keys()), 4)
-            self.assertEqual(result[1]['SourceFile'], files[1])
+            self.assertEqual(os.path.normpath(result[1]['SourceFile']), files[1])
             self.assertEqual(result[1]['EXIF:FNumber'], 3.1)
             self.assertEqual(result[1]['EXIF:GPSLatitudeRef'], 'N')
             self.assertEqual(result[1]['EXIF:GPSLatitude'], 0)
