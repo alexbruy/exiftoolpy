@@ -1,13 +1,25 @@
 language: python
 
-python:
-  - "3.7"
-
-install:
+env:
   - EXIFTOOL_VERSION=11.83
-  - wget https://exiftool.org/Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz
-  - tar -zxvf Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz
-  - export PATH=${PWD}/Image-ExifTool-${EXIFTOOL_VERSION}:$PATH
+
+jobs:
+  include:
+    - name: "Linux"
+      python: 3.7
+      install:
+        - wget https://exiftool.org/Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz
+        - tar -zxvf Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz
+        - export PATH=${PWD}/Image-ExifTool-${EXIFTOOL_VERSION}:$PATH
+
+    - name: "macOS"
+      os: osx
+      osx_image: xcode11.3
+      language: shell
+      install:
+        - wget https://exiftool.org/ExifTool-${EXIFTOOL_VERSION}.dmg
+        - sudo hdiutil attach ExifTool-${EXIFTOOL_VERSION}.dmg
+        - sudo installer -package /Volumes/ExifTool-${EXIFTOOL_VERSION}/ExifTool-${EXIFTOOL_VERSION}.pkg -target /
 
 script:
-  - python -m unittest -v tests/test_exiftool.py
+  - python3 -m unittest -v tests/test_exiftool.py || python -m unittest -v tests/test_exiftool.py
