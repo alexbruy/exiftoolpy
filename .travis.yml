@@ -1,0 +1,13 @@
+language: python
+
+python:
+  - "3.7"
+
+install:
+  - EXIFTOOL_VERSION=11.83
+  - wget https://exiftool.org/Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz
+  - tar -zxvf Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz
+  - export PATH=${PWD}/Image-ExifTool-${EXIFTOOL_VERSION}:$PATH
+
+script:
+  - python -m unittest -v tests/test_exiftool.py
