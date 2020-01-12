@@ -53,6 +53,14 @@ class TextExifTool(unittest.TestCase):
             self.assertEqual(et.instance.args[0], 'exiftool')
             self.assertEqual(et.instance.args[1:], ['-sort', '-fast'] + DEFAULT_PARAMS)
 
+        cfg = os.path.normpath(os.path.join(DATA_DIRECTORY, 'et.config'))
+        with ExifTool(config=cfg) as et:
+            self.assertTrue(et.running)
+            self.assertIsNotNone(et.instance)
+            self.assertIsNone(et.instance.poll())
+            self.assertEqual(et.instance.args[0], 'exiftool')
+            self.assertEqual(et.instance.args[1:], ['-config', cfg] + DEFAULT_PARAMS)
+
     def testMetadata(self):
         with ExifTool() as et:
             files = [os.path.join(DATA_DIRECTORY, 'RIMG0046.JPG')]
