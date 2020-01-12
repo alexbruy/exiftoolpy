@@ -46,6 +46,12 @@ class TextExifTool(unittest.TestCase):
         self.assertFalse(et.running)
         self.assertIsNone(et.instance)
 
+        with ExifTool(params=['-sort', '-fast']) as et:
+            self.assertTrue(et.running)
+            self.assertIsNotNone(et.instance)
+            self.assertIsNone(et.instance.poll())
+            self.assertEqual(et.instance.args[0], 'exiftool')
+            self.assertEqual(et.instance.args[1:], ['-sort', '-fast'] + DEFAULT_PARAMS)
 
     def testMetadata(self):
         with ExifTool() as et:

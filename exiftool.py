@@ -50,7 +50,7 @@ class ExifTool:
             command.append(self.config)
 
         if self.params:
-            command.extend(params)
+            command.extend(self.params)
 
         command.extend(DEFAULT_PARAMS)
         #cmd = self._prepareCommand(command)
