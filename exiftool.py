@@ -110,3 +110,9 @@ class ExifTool:
         params.extend(files)
 
         return self._execute(params)
+
+    def setTags(self, tags, files):
+        params = ['-{}={}'.format(k, v) for k, v in tags.items()]
+        params.extend(files)
+
+        return self._execute(params)
