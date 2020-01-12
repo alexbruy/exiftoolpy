@@ -23,7 +23,7 @@ __copyright__ = '(C) 2020, Alexander Bruy'
 
 import os
 import unittest
-from exiftool import ExifTool
+from exiftool import ExifTool, DEFAULT_PARAMS
 
 DATA_DIRECTORY = os.path.join(os.path.dirname(__file__), 'data')
 
@@ -40,9 +40,12 @@ class TextExifTool(unittest.TestCase):
             self.assertTrue(et.running)
             self.assertIsNotNone(et.instance)
             self.assertIsNone(et.instance.poll())
+            self.assertEqual(et.instance.args[0], 'exiftool')
+            self.assertEqual(et.instance.args[1:], DEFAULT_PARAMS)
 
         self.assertFalse(et.running)
         self.assertIsNone(et.instance)
+
 
     def testMetadata(self):
         with ExifTool() as et:
