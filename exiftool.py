@@ -99,7 +99,10 @@ class ExifTool:
 
             output += line
 
-        result = json.loads(output)
+        try:
+            result = json.loads(output)
+        except:
+            result = json.loads('["{}"]'.format(output.strip()))
         return result
 
     def metadata(self, files):

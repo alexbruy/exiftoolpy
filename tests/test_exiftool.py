@@ -22,7 +22,10 @@ __date__ = 'January 2020'
 __copyright__ = '(C) 2020, Alexander Bruy'
 
 import os
+import shutil
+import tempfile
 import unittest
+
 from exiftool import ExifTool, DEFAULT_PARAMS
 
 DATA_DIRECTORY = os.path.join(os.path.dirname(__file__), 'data')
@@ -128,6 +131,30 @@ class TextExifTool(unittest.TestCase):
             self.assertEqual(result[1]['EXIF:FNumber'], 3.1)
             self.assertEqual(result[1]['EXIF:GPSLatitudeRef'], 'N')
             self.assertEqual(result[1]['EXIF:GPSLatitude'], 0)
+
+    def testSetTags(self):
+        tmp = shutil.copy2(os.path.join(DATA_DIRECTORY, 'RIMG0046.JPG'), tempfile.gettempdir())
+        self.assertTrue(os.path.isfile(tmp))
+
+        with ExifTool() as et:
+            tags = ['EXIF:ImageDescription',
+                   ]
+            result = et.tags(tags, [tmp])
+            self.assertEqual(result[0]['EXIF:ImageDescription'].strip(), '')
+
+            value = 'Test comment'
+            newTags = {'EXIF:ImageDescription': value,
+                      }
+            result = et.setTags(newTags, [tmp])
+            self.assertEqual(len(result), 1)
+            self.assertEqual(result[0], '')
+
+            result = et.tags(tags, [tmp])
+            self.assertEqual(result[0]['EXIF:ImageDescription'].strip(), value)
+
+        os.remove(tmp)
+        self.assertFalse(os.path.isfile(tmp))
+
 
 if __name__ == '__main__':
     unittest.main()
