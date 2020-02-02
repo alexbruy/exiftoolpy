@@ -24,7 +24,6 @@ __copyright__ = '(C) 2019, Alexander Bruy'
 import os
 import sys
 import json
-import shlex
 import subprocess
 
 
