@@ -53,7 +53,7 @@ class ExifTool:
             command.extend(self.params)
 
         command.extend(DEFAULT_PARAMS)
-        opts = subprocess.CREATE_NO_WINDOW if sys.version_info >= (3, 7) else 0
+        opts = subprocess.CREATE_NO_WINDOW if sys.version_info >= (3, 7) and sys.platform == 'win32' else 0
         self.instance = subprocess.Popen(command,
                                          stdin=subprocess.PIPE,
                                          stdout=subprocess.PIPE,
