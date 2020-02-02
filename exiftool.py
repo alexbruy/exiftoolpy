@@ -53,12 +53,13 @@ class ExifTool:
             command.extend(self.params)
 
         command.extend(DEFAULT_PARAMS)
-        #cmd = self._prepareCommand(command)
+        opts = subprocess.CREATE_NO_WINDOW if sys.version_info >= (3, 7) else 0
         self.instance = subprocess.Popen(command,
                                          stdin=subprocess.PIPE,
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.DEVNULL,
-                                         universal_newlines=True
+                                         universal_newlines=True,
+                                         creationflags=opts
                                         )
 
         self.running = True
